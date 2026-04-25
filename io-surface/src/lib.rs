@@ -14,20 +14,28 @@
 
 // Rust bindings to the IOSurface framework on macOS.
 
+#[cfg(target_os = "macos")]
 use cgl::{kCGLNoError, CGLErrorString, CGLGetCurrentContext, CGLTexImageIOSurface2D, GLenum};
 use core::ffi::{c_int, c_void};
 use core_foundation::base::{CFRelease, CFRetain, CFType, CFTypeID, CFTypeRef, TCFType};
 use core_foundation::dictionary::{CFDictionary, CFDictionaryRef};
 use core_foundation::string::{CFString, CFStringRef};
 use core_foundation_sys::base::mach_port_t;
+#[cfg(target_os = "macos")]
 use leaky_cow::LeakyCow;
+#[cfg(target_os = "macos")]
 use std::ffi::CStr;
 use std::slice;
 
+#[cfg(target_os = "macos")]
 const BGRA: GLenum = 0x80E1;
+#[cfg(target_os = "macos")]
 const RGBA: GLenum = 0x1908;
+#[cfg(target_os = "macos")]
 const RGB: GLenum = 0x1907;
+#[cfg(target_os = "macos")]
 const TEXTURE_RECTANGLE_ARB: GLenum = 0x84F5;
+#[cfg(target_os = "macos")]
 const UNSIGNED_INT_8_8_8_8_REV: GLenum = 0x8367;
 
 #[allow(non_snake_case, non_upper_case_globals)]
@@ -111,6 +119,7 @@ impl IOSurface {
     }
 
     /// Binds to the current GL texture.
+    #[cfg(target_os = "macos")]
     pub fn bind_to_gl_texture(&self, width: i32, height: i32, has_alpha: bool) {
         unsafe {
             let context = CGLGetCurrentContext();
